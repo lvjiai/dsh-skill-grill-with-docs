@@ -1,0 +1,25 @@
+# Bundle layer for dsh-skill-grill-with-docs.
+#
+# This file is the `dsh.bundle.patch` layer declared in package.json. When the
+# plugin is installed through the official CLI:
+#
+#   dsh plugin --profile <profile> add dsh-skill-grill-with-docs
+#
+# ...the command reconciles `dsh.profile.bundles` against installed packages
+# and, seeing this declaration, appends this package to the bundle stack. The
+# profile boot then merges THIS patch — a single `insert` of the plugin row —
+# exactly like a manual cordis.patch.yml mount line. No profile file edits.
+#
+# Local development install:
+#
+#   dsh plugin --profile <profile> add link:<absolute-path-to-this-repo>
+#
+# Rank note: this provider registers its skills through the registry at
+# BUNDLED_SKILL_RANK (600), the documented rank for packaged skill providers.
+# A local copy of the same three skills under a user skill root
+# (`$DSH_HOME/skills`, rank 400) or a project root (rank 100/200) OUTRANKS
+# this provider and silently shadows it. Remove any such copy before
+# switching to the plugin channel, or the packaged rows never win.
+- insert:
+    - id: skill-grill-with-docs
+      name: dsh-skill-grill-with-docs

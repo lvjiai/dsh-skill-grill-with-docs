@@ -1,0 +1,5 @@
+# Keep the packaged skill assets byte-identical to upstream, whatever the
+# checking-out platform's line-ending settings are. Without this, a Windows
+# checkout rewrites the LF bodies as CRLF and the PROVENANCE claim of verbatim
+# copying stops being true.
+* text=auto eol=lf
