@@ -4,9 +4,13 @@ A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) skill prov
 [`grill-with-docs`](https://github.com/mattpocock/skills), `grilling` and `domain-modeling` skills, so they reach the
 session skill catalog **without** a local skill root.
 
-The plugin is the distribution channel; the skill bodies are copied verbatim from upstream and stay the single source
-of truth. Discovery parses their frontmatter and every load re-reads the body, so editing an asset needs no cache
+The plugin is the distribution channel; the skill bodies come from upstream and their frontmatter stays the single
+source of truth. Discovery parses it and every load re-reads the body, so editing an asset needs no cache
 invalidation.
+
+Four of the five bodies are byte-identical to upstream. `grilling` carries one documented change: its interview round
+goes through this harness's `ask_user_question` popup rather than an upstream text template, with the text form kept as
+the fallback. See [PROVENANCE.md](PROVENANCE.md).
 
 ## What you get
 
@@ -103,7 +107,8 @@ To refresh the packaged skill bodies against a newer upstream commit, follow
 
 ## License and provenance
 
-MIT. The plugin code is original; the five files under `assets/` are copied verbatim from
+MIT. The plugin code is original; the five files under `assets/` come from
 [mattpocock/skills](https://github.com/mattpocock/skills) (MIT, © 2026 Matt Pocock), pinned to commit
-`49dd158d1076134a641b33efb035946536778336`. See [PROVENANCE.md](PROVENANCE.md) for the file-by-file mapping, the
-upstream license notice, and the refresh procedure.
+`49dd158d1076134a641b33efb035946536778336` — four byte-identical, and `grilling` carrying the popup delta described
+above. See [PROVENANCE.md](PROVENANCE.md) for the file-by-file state, the delta, the upstream license notice, and the
+refresh procedure.

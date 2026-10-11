@@ -4,8 +4,11 @@
 [`grill-with-docs`](https://github.com/mattpocock/skills)、`grilling`、`domain-modeling` 三个技能打包分发，**无需**本地技能目录
 即可进入会话技能目录。
 
-插件只是分发渠道；技能正文从上游原样复制，并始终是唯一事实来源。发现阶段解析其 frontmatter，每次加载都重新读取正文，因此修改
+插件只是分发渠道；技能正文来自上游，其 frontmatter 是唯一事实来源。发现阶段解析 frontmatter，每次加载都重新读取正文，因此修改
 资源文件不需要任何缓存失效处理。
+
+五份正文里有四份与上游逐字节一致；`grilling` 带有一处有记录的改动：它的访谈轮次改走本 Harness 的 `ask_user_question` 弹窗，不再
+使用上游的文字模板，文字形式保留为降级方案。详见 [PROVENANCE.md](PROVENANCE.md)。
 
 ## 提供的三个技能
 
@@ -96,6 +99,6 @@ pnpm test
 
 ## 许可与来源
 
-MIT。插件代码为原创；`assets/` 下的五个文件从 [mattpocock/skills](https://github.com/mattpocock/skills)（MIT，© 2026 Matt
-Pocock）原样复制，固定在 commit `49dd158d1076134a641b33efb035946536778336`。文件级对应关系、上游许可声明与刷新流程见
-[PROVENANCE.md](PROVENANCE.md)。
+MIT。插件代码为原创；`assets/` 下的五个文件来自 [mattpocock/skills](https://github.com/mattpocock/skills)（MIT，© 2026 Matt
+Pocock），固定在 commit `49dd158d1076134a641b33efb035946536778336` —— 其中四份与上游逐字节一致，`grilling` 带有上述弹窗
+delta。文件级状态、delta 说明、上游许可声明与刷新流程见 [PROVENANCE.md](PROVENANCE.md)。
