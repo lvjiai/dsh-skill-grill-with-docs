@@ -36,7 +36,7 @@
 dsh plugin --profile <profile> add dsh-skill-grill-with-docs
 
 # 从 git 仓库
-dsh plugin --profile <profile> add github:<owner>/dsh-skill-grill-with-docs
+dsh plugin --profile <profile> add github:lvjiai/dsh-skill-grill-with-docs
 
 # 本地开发时，直接链接本目录
 dsh plugin --profile <profile> add link:<本仓库绝对路径>

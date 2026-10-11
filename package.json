@@ -52,6 +52,18 @@
     "@deepseek-ai/dsh-skill": "0.2.0-rc.2"
   },
   "license": "MIT",
+  "author": "lvjiai",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lvjiai/dsh-skill-grill-with-docs.git"
+  },
+  "homepage": "https://github.com/lvjiai/dsh-skill-grill-with-docs#readme",
+  "bugs": {
+    "url": "https://github.com/lvjiai/dsh-skill-grill-with-docs/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "node --test \"tests/**/*.test.js\""
   }

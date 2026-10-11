@@ -39,7 +39,7 @@ the tool is the `dsh-tool-skill` layer's job, and it does it correctly.)
 dsh plugin --profile <profile> add dsh-skill-grill-with-docs
 
 # from a git host
-dsh plugin --profile <profile> add github:<owner>/dsh-skill-grill-with-docs
+dsh plugin --profile <profile> add github:lvjiai/dsh-skill-grill-with-docs
 
 # from a local checkout, while developing
 dsh plugin --profile <profile> add link:<absolute-path-to-this-repo>
