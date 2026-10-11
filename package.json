@@ -1,6 +1,6 @@
 {
   "name": "dsh-skill-grill-with-docs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DeepSeek Harness skill provider packaging Matt Pocock's grill-with-docs, grilling and domain-modeling skills.",
   "keywords": [
     "dsh",

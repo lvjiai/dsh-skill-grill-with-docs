@@ -13,20 +13,39 @@ from Matt Pocock's skills repository:
 | Commit | `49dd158d1076134a641b33efb035946536778336` (2026-10-09) |
 | Upstream license | MIT |
 
-Copied verbatim, with no modification:
-
-| Packaged asset | Upstream path |
-|---|---|
-| `assets/grill-with-docs/SKILL.md` | `skills/engineering/grill-with-docs/SKILL.md` |
-| `assets/grilling/SKILL.md` | `skills/productivity/grilling/SKILL.md` |
-| `assets/domain-modeling/SKILL.md` | `skills/engineering/domain-modeling/SKILL.md` |
-| `assets/domain-modeling/GLOSSARY-FORMAT.md` | `skills/engineering/domain-modeling/GLOSSARY-FORMAT.md` |
-| `assets/domain-modeling/ADR-FORMAT.md` | `skills/engineering/domain-modeling/ADR-FORMAT.md` |
+| Packaged asset | Upstream path | State |
+|---|---|---|
+| `assets/grill-with-docs/SKILL.md` | `skills/engineering/grill-with-docs/SKILL.md` | verbatim |
+| `assets/grilling/SKILL.md` | `skills/productivity/grilling/SKILL.md` | **patched, see below** |
+| `assets/domain-modeling/SKILL.md` | `skills/engineering/domain-modeling/SKILL.md` | verbatim |
+| `assets/domain-modeling/GLOSSARY-FORMAT.md` | `skills/engineering/domain-modeling/GLOSSARY-FORMAT.md` | verbatim |
+| `assets/domain-modeling/ADR-FORMAT.md` | `skills/engineering/domain-modeling/ADR-FORMAT.md` | verbatim |
 
 Upstream `agents/openai.yaml` files are deliberately not packaged: they carry
 OpenAI/Codex interface metadata that this provider does not read.
 
-To refresh the assets against a newer upstream commit:
+## Local delta: `grilling`
+
+Upstream writes its interview protocol against a plain text channel, because it
+targets any agent host. This package is DeepSeek Harness-only — it imports
+`@deepseek-ai/dsh-skill`, declares `dsh.bundle.patch`, and peer-depends on DSH
+packages — so host-neutrality buys nothing here and the DSH popup is strictly
+better for the reader.
+
+One region is therefore rewritten, and nothing else:
+
+| Upstream | Here |
+|---|---|
+| "Format a round like so:" plus the `❓ **Q1**` / `➡️` fenced template, and "Word each question so 'yes' accepts your recommended answer." | The round is one `ask_user_question` call; its `id`/`header`/`question`/`options` fields are specified, the recommendation goes first with `(Recommended)`, open questions carry no `options`, and the upstream text block survives only as the documented fallback for when the tool is unavailable. |
+
+Everything the patch keeps intact: the design tree, rounds, the frontier and how
+it advances, "the whole frontier in one round", the recommended answer, waiting
+for the user between rounds, facts-by-sub-agent, and the closing condition.
+The upstream opening and closing paragraphs are unchanged, and
+`tests/provider.test.js` asserts both the untouched edges and the patched
+protocol, so an upstream refresh cannot silently drop the delta.
+
+## Refreshing against a newer upstream commit
 
 ```sh
 git clone --depth 1 https://github.com/mattpocock/skills.git /tmp/mattpocock-skills
@@ -35,8 +54,11 @@ cp /tmp/mattpocock-skills/skills/productivity/grilling/SKILL.md         assets/g
 cp /tmp/mattpocock-skills/skills/engineering/domain-modeling/SKILL.md   assets/domain-modeling/
 cp /tmp/mattpocock-skills/skills/engineering/domain-modeling/GLOSSARY-FORMAT.md assets/domain-modeling/
 cp /tmp/mattpocock-skills/skills/engineering/domain-modeling/ADR-FORMAT.md      assets/domain-modeling/
-npm test
 ```
+
+Then **re-apply the `grilling` delta** from the table above — the copy above
+deliberately overwrites it — update the commit pin, and run `npm test`, which
+fails loudly if the delta is missing.
 
 Update the commit pin above in the same change.
 

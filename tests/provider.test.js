@@ -104,7 +104,7 @@ describe('provider.get', () => {
     }
   })
 
-  it('serves the upstream bodies verbatim', async () => {
+  it('serves the expected bodies', async () => {
     const candidates = new Map((await provider.list()).map((candidate) => [candidate.name, candidate]))
 
     // grill-with-docs is a one-line delegation, so its body is exactly that line.
@@ -114,6 +114,7 @@ describe('provider.get', () => {
       'Call the Skill tool twice, for "grilling" and "domain-modeling".',
     )
 
+    // Untouched upstream edges. See PROVENANCE.md for the patched middle.
     const grilling = await provider.get(candidates.get('grilling'))
     assert.ok(grilling.content.startsWith('Interview the user relentlessly until you reach a shared understanding.'))
     assert.ok(grilling.content.includes('**design tree**'))
@@ -122,6 +123,27 @@ describe('provider.get', () => {
     const domainModeling = await provider.get(candidates.get('domain-modeling'))
     assert.ok(domainModeling.content.startsWith('# Domain Modeling\n'))
     assert.ok(domainModeling.content.includes('./GLOSSARY-FORMAT.md'))
+  })
+
+  // PROVENANCE.md documents this delta from upstream. An upstream refresh
+  // overwrites assets/grilling/SKILL.md, so these assertions are the guard that
+  // the DSH popup protocol cannot silently disappear.
+  it('keeps the DSH popup delta in grilling', async () => {
+    const candidates = new Map((await provider.list()).map((candidate) => [candidate.name, candidate]))
+    const { content } = await provider.get(candidates.get('grilling'))
+
+    assert.ok(content.includes('`ask_user_question`'), 'the round must go through the DSH popup')
+    assert.ok(content.includes('(Recommended)'), 'the recommendation must lead an options list')
+    assert.ok(content.includes('`multi_select`'), 'multi-select must stay specified')
+    assert.ok(content.includes('`DELEGATED_CALLER`'), 'the sub-agent fallback must stay documented')
+    assert.ok(
+      content.includes('➡️'),
+      'the upstream text round must survive as the documented fallback',
+    )
+    assert.ok(
+      !content.includes('Format a round like so:'),
+      'the upstream text-only format must not come back as the primary protocol',
+    )
   })
 
   it('takes the body verbatim from the asset, minus frontmatter', async () => {
